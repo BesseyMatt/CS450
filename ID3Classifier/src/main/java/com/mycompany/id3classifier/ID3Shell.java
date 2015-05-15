@@ -6,12 +6,11 @@
 package com.mycompany.id3classifier;
 
 import java.util.Random;
-import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.lazy.IBk;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
 import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.Discretize;
 import weka.filters.unsupervised.attribute.Standardize;
 
 /**
@@ -20,8 +19,12 @@ import weka.filters.unsupervised.attribute.Standardize;
  */
 public class ID3Shell {
      public static void main(String[] args) throws Exception {
-            ConverterUtils.DataSource source = new ConverterUtils.DataSource("bank.csv");
+            ConverterUtils.DataSource source = new ConverterUtils.DataSource("irisData.csv");
             Instances dataSet = source.getDataSet();
+            
+            Discretize filter = new Discretize();
+            filter.setInputFormat(dataSet);
+            dataSet = Filter.useFilter(dataSet, filter);
             
             Standardize standardize = new Standardize();
             standardize.setInputFormat(dataSet);

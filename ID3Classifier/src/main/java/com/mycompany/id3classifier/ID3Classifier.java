@@ -72,22 +72,10 @@ public class ID3Classifier extends Classifier
         HashMap<Instance, Double> map = new HashMap<>();
 
         for (Instance instance : instances) 
-            map.put(instance, instance.value(attribute));
-
-        if (!attribute.isNominal())
-            for (Instance key : map.keySet()) 
-            {
-                if (map.get(key) == Double.NaN) 
-                {
-                    //Do Nothing
-                } 
-                
-                else if (map.get(key) < 0.5) 
-                    map.put(key, 0.0); // 'Low'
-                
-                else
-                    map.put(key, 1.0); // 'High'
-            }
+        {
+            if (!Double.isNaN(instance.value(attribute)))
+                map.put(instance, instance.value(attribute));
+        }
 
         return map;
     }
@@ -137,6 +125,9 @@ public class ID3Classifier extends Classifier
      */
      private double entropy(List<Instance> instances) 
     {
+        if (instances.isEmpty())
+            return 0;
+        
         double result = 0;
         Map<Double, Integer> summary = summarizeValues(valuesByAttribute(instances, instances.get(0).classAttribute()));
         
@@ -178,7 +169,7 @@ public class ID3Classifier extends Classifier
         //returns if the members of instance are all the same class
         Pair<Boolean, Double> classification = sameClass(instances);
         
-        //If all memebers have the same class create a leaf node and return
+        //If all members have the same class create a leaf node and return
         if (classification.getKey()) 
             return new Node(classification.getValue());
 

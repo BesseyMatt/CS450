@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author weatherwornwow
+ * @author Besseym
  */
 public class Network {
    List<Layer> layers = new ArrayList<>();

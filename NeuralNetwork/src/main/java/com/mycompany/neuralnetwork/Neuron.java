@@ -7,6 +7,7 @@ package com.mycompany.neuralnetwork;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -17,8 +18,10 @@ public class Neuron {
      List<Double> weights = new ArrayList<>();
 
     public Neuron(int inputCount) {
+        double oneOver = 1.0 / Math.sqrt(inputCount);
+        
         for (int i = 0; i < inputCount; i++) {
-            weights.add(Math.random() * 2.0 - 1.0);
+            weights.add(Math.random() * 2.0 * oneOver - oneOver);
         }
     }
 
@@ -33,7 +36,7 @@ public class Neuron {
             sum += weights.get(i) * inputs.get(i);
         }
 
-        return (sum <= 0 ? 0 : 1);
+        return 1 / (1 + Math.exp(-sum));
     }
     
     public Double getWeight(int index) {
